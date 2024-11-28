@@ -224,10 +224,10 @@ iptables -A INPUT -p tcp -j DROP
 ### 4. 只允许转发来自172.16.0.0/24局域网段的DNS解析请求数据包。
 ```bash
 # 允许来自 172.16.0.0/24 网段的 DNS 请求
-iptables -A INPUT -p udp -s 172.16.0.0/24 --dport 53 -j ACCEPT
+iptables -A FORWARD -p udp -s 172.16.0.0/24 --dport 53 -j ACCEPT
 
 # 拒绝所有其他的 DNS 请求
-iptables -A INPUT -p udp --dport 53 -j DROP
+iptables -A FORWARD -p udp --dport 53 -j DROP
 ```
 
 ## 命令解释:
